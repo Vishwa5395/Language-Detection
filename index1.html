@@ -4,37 +4,259 @@
   <meta charset="UTF-8">
   <title>Language Detector</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 50px;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
+
     .container {
-      background: #fff;
-      padding: 30px;
-      max-width: 500px;
-      margin: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-    input, button {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 40px;
+      max-width: 600px;
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: slideIn 0.8s ease-out;
     }
-    #result {
-      margin-top: 20px;
-      font-weight: bold;
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h2 {
+      text-align: center;
       color: #333;
+      margin-bottom: 30px;
+      font-size: 2.2em;
+      font-weight: 300;
+      position: relative;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      border-radius: 2px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    #textInput {
+      width: 100%;
+      padding: 20px;
+      border: 2px solid #e1e8ed;
+      border-radius: 15px;
+      font-size: 16px;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 120px;
+      transition: all 0.3s ease;
+      background: #fafbfc;
+      outline: none;
+    }
+
+    #textInput:focus {
+      border-color: #667eea;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    #textInput::placeholder {
+      color: #8899a6;
+      font-style: italic;
+    }
+
+    .detect-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detect-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .detect-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .detect-btn:hover::before {
+      left: 100%;
+    }
+
+    .detect-btn:active {
+      transform: translateY(-1px);
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 18px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #result.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #result.hidden {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    #result.success {
+      /*background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+      box-shadow: 0 10px 25px rgba(17, 153, 142, 0.2);*/
+      color: black
+    }
+
+    #result.error {
+      background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+      color: white;
+      box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+    }
+
+    #result.info {
+      background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+      color: white;
+      box-shadow: 0 10px 25px rgba(52, 152, 219, 0.2);
+    }
+
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .language-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+
+    .feature-hint {
+      text-align: center;
+      color: #8899a6;
+      font-size: 14px;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        margin: 10px;
+        padding: 30px 20px;
+      }
+      
+      h2 {
+        font-size: 1.8em;
+      }
+      
+      #textInput {
+        padding: 15px;
+        font-size: 14px;
+      }
+      
+      .detect-btn {
+        padding: 15px;
+        font-size: 16px;
+      }
+    }
+
+    /* Subtle background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: -1;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Language Detector</h2>
-    <textarea id="textInput" rows="5" placeholder="Enter your text here..."></textarea>
-    <button onclick="detectLanguage()">Detect Language</button>
+    <h2> Language Detector</h2>
+    <div class="input-group">
+      <textarea id="textInput" rows="5" placeholder="Enter your text here and discover its language..."></textarea>
+    </div>
+    <button class="detect-btn" onclick="detectLanguage()">Detect Language</button>
     <div id="result"></div>
+    <div class="feature-hint">
+      Made by Vishwanath
+    </div>
   </div>
 
   <script>
@@ -42,13 +264,22 @@
       const text = document.getElementById('textInput').value;
       const apiKey = 'AP2024254000295'; // Your API key
       const resultDiv = document.getElementById('result');
+      const button = document.querySelector('.detect-btn');
+
+      console.log('Starting detection with text:', text); // Debug log
 
       if (!text.trim()) {
-        resultDiv.innerHTML = 'Please enter some text.';
+        showResult('Please enter some text to analyze.', 'info');
         return;
       }
 
+      // Show loading state
+      button.innerHTML = '<span class="loading"></span>Analyzing...';
+      button.disabled = true;
+      resultDiv.className = 'hidden';
+
       try {
+        console.log('Making API request...'); // Debug log
         const response = await fetch('http://127.0.0.1:5000/predict', {
           method: 'POST',
           headers: {
@@ -58,18 +289,51 @@
           body: JSON.stringify({ text: text })
         });
 
+        console.log('Response status:', response.status); // Debug log
         const data = await response.json();
+        console.log('Response data:', data); // Debug log
 
         if (response.ok) {
-          resultDiv.innerHTML = `Predicted Language: <strong>${data.language}</strong>`;
+          showResult(`<span class="language-icon"></span>Detected Language: <strong>${data.language}</strong>`, 'success');
         } else {
-          resultDiv.innerHTML = `Error: ${data.error}`;
+          showResult(`<span class="language-icon"></span>Error: ${data.error}`, 'error');
         }
       } catch (err) {
-        console.error(err);
-        resultDiv.innerHTML = 'Something went wrong. Is the Flask server running?';
+        console.error('Fetch error:', err);
+        showResult('<span class="language-icon">🔌</span>Connection failed. Please check if the Flask server is running.', 'error');
+      } finally {
+        // Reset button
+        button.innerHTML = 'Detect Language';
+        button.disabled = false;
+        console.log('Detection process completed'); // Debug log
       }
     }
+
+    function showResult(message, type) {
+      const resultDiv = document.getElementById('result');
+      console.log('Showing result:', message, 'Type:', type); // Debug log
+      
+      resultDiv.innerHTML = message;
+      
+      // Remove all existing classes first
+      resultDiv.className = '';
+      
+      // Force a reflow to ensure the class change takes effect
+      resultDiv.offsetHeight;
+      
+      // Add the new classes
+      resultDiv.classList.add('show', type);
+      
+      console.log('Result div classes:', resultDiv.className); // Debug log
+      console.log('Result div content:', resultDiv.innerHTML); // Debug log
+    }
+
+    // Add enter key support for textarea
+    document.getElementById('textInput').addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'Enter') {
+        detectLanguage();
+      }
+    });
   </script>
 </body>
 </html>
