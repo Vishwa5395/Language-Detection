@@ -7,28 +7,23 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.model_selection import train_test_split
 
-# Load dataset
 df = pd.read_csv(r"C:\Users\tiwar\Downloads\dataset.csv")
 
-# Prepare data
 x = np.array(df['Text'])
 y = np.array(df['language'])
 
-# 🔹 Using TF-IDF with character n-grams (handles different scripts better)
 vectorizer = TfidfVectorizer(analyzer='char', ngram_range=(1, 3))  # Character n-grams help with space-less languages
 X = vectorizer.fit_transform(x)
 
-# Train-test split (Search)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=3) 
 
-# Train model
 model = MultinomialNB()
 model.fit(X_train, y_train)
 
-app = Flask(__name__) #Initializes App
+app = Flask(__name__) 
 CORS(app, resources={r"/": {"origins": "*"}}, supports_credentials=True)
 
-API_KEY="AP2024254000295" #API key to fetch data
+API_KEY="AP2024254000295" #API key to fetch data random
 
 @app.route('/predict',methods=['POST'])
 def predict():
@@ -69,13 +64,13 @@ if __name__=='__main__':
 # score = model.score(X_test, y_test)
 # print(f"Model Accuracy: {score * 100:.2f}%")
 
-# # 🔹 Function to Detect Language from User Input
+# Function to Detect Language from User Input
 # def detect_language(text):
 #     text_transformed = vectorizer.transform([text])  # Convert input text to numerical features
 #     predicted_language = model.predict(text_transformed)[0]  # Predict language
 #     return predicted_language
 
-# # 🔹 Get user input and predict the language
+# Get user input and predict the language
 # while True:
 #     user_text = input("Enter a sentence or paragraph (or type 'exit' to stop): ")
 #     if user_text.lower() == "exit":
