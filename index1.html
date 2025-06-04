@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Language Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 50px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      background: #fff;
+      padding: 30px;
+      max-width: 500px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Language Detector</h2>
+    <textarea id="textInput" rows="5" placeholder="Enter your text here..."></textarea>
+    <button onclick="detectLanguage()">Detect Language</button>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    async function detectLanguage() {
+      const text = document.getElementById('textInput').value;
+      const apiKey = 'AP2024254000295'; // Your API key
+      const resultDiv = document.getElementById('result');
+
+      if (!text.trim()) {
+        resultDiv.innerHTML = 'Please enter some text.';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-api-key': apiKey
+          },
+          body: JSON.stringify({ text: text })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          resultDiv.innerHTML = `Predicted Language: <strong>${data.language}</strong>`;
+        } else {
+          resultDiv.innerHTML = `Error: ${data.error}`;
+        }
+      } catch (err) {
+        console.error(err);
+        resultDiv.innerHTML = 'Something went wrong. Is the Flask server running?';
+      }
+    }
+  </script>
+</body>
+</html>
