@@ -1,4 +1,4 @@
-#  Language Detection Web Application
+#  Language Detection
 
 This is a web-based Language Detection App powered by **Flask** and **scikit-learn** on the backend, and a simple **HTML/CSS/JavaScript** frontend. It uses a trained **Naive Bayes classifier** on TF-IDF features with character-level n-grams to identify the language of a given text input.
 
