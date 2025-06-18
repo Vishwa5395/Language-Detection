@@ -1,21 +1,21 @@
-# 🌐 Language Detection Web Application
+#  Language Detection Web Application
 
 This is a web-based Language Detection App powered by **Flask** and **scikit-learn** on the backend, and a simple **HTML/CSS/JavaScript** frontend. It uses a trained **Naive Bayes classifier** on TF-IDF features with character-level n-grams to identify the language of a given text input.
 
 ---
 
-## 📌 Features
+##  Features
 
-- 🧠 ML Model trained on multilingual dataset using `MultinomialNB`.
-- 🔠 Accepts user input and predicts the language.
-- 🌐 REST API endpoint to integrate with any frontend.
-- 🔐 Secured using an API key.
-- 🌍 CORS-enabled to work across domains.
-- 💻 Minimal and clean user interface.
+-  ML Model trained on multilingual dataset using `MultinomialNB`.
+-  Accepts user input and predicts the language.
+-  REST API endpoint to integrate with any frontend.
+-  Secured using an API key.
+-  CORS-enabled to work across domains.
+-  Minimal and clean user interface.
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 | Backend   | Frontend        | ML/NLP Libraries      |
 |-----------|------------------|------------------------|
@@ -24,7 +24,7 @@ This is a web-based Language Detection App powered by **Flask** and **scikit-lea
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 language-detector/
 │
@@ -35,7 +35,7 @@ language-detector/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
 
@@ -68,39 +68,39 @@ Open the index.html file in your browser (via double-click or Live Server extens
 
 Enter text and click Detect Language — it will fetch the result from the Flask API and display it on the page.
 
-📡 API Usage
-🔐 Authentication
+ API Usage
+ Authentication
 You must provide a valid API key in the request header:
 
 makefile
 Copy
 Edit
 x-api-key: AP2024254000295
-📬 Endpoint
+ Endpoint
 bash
 Copy
 Edit
 POST /predict
-🔄 Request Body (JSON)
+ Request Body (JSON)
 json
 Copy
 Edit
 {
   "text": "Bonjour tout le monde"
 }
-📤 Response
+ Response
 json
 Copy
 Edit
 {
   "language": "French"
 }
-🛡️ Security
+ Security
 The backend uses an x-api-key header to restrict access to authorized clients.
 
 CORS headers are configured to allow requests from different origins.
 
-📈 Future Improvements
+ Future Improvements
 Use a larger and more diverse dataset for better accuracy.
 
 Add more supported languages.
@@ -111,7 +111,7 @@ Add a model accuracy endpoint or confidence score in the API response.
 
 Enhance UI/UX for mobile support.
 
-👨‍💻 Author
+ Author
 Vishwanath Tiwari
 
 Feel free to reach out or contribute!
